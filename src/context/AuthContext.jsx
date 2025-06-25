@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    console.log("🧠 AuthContext restoring user:", storedUser); 
+
     if (storedUser) {
       try {
         const parsed = JSON.parse(storedUser);
