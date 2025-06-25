@@ -40,7 +40,8 @@ const BlogDetails = () => {
   if (!blog)
     return <div className="text-center mt-10 text-red-500">Blog Not Found.</div>;
 
-  const isAuthor = user && blog?.author && user._id === blog.author._id;
+  const isAuthor =
+  user && blog?.author && user._id.toString() === blog.author._id.toString();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] text-white px-4 py-12">
