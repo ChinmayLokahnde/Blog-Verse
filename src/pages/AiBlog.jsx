@@ -14,18 +14,40 @@ const AiBlog = () => {
   const navigate = useNavigate();
 
   const handleGenerate = async () => {
-    if (!idea) return;
+    if (!idea) {
+      alert("Please enter a blog idea.");
+      return;
+    }
+
     setLoading(true);
     try {
-      const res = await axios.post("/ai/generate", { idea });
-      setGenerateBlog(res.data.blog);
+      const res = await axios.post(
+        "/ai/generate",
+        { idea },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      if (res.data?.blog) {
+        setGenerateBlog(res.data.blog);
+      } else {
+        alert("No blog content returned. Try again.");
+      }
     } catch (err) {
-      alert("Failed to generate blog");
+      console.error("AI generation error:", err);
+      alert("AI generation failed. Please try again.");
     }
     setLoading(false);
   };
 
   const handlePost = async () => {
+    if (!generateBlog) {
+      alert("Please generate a blog before posting.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("title", title || "Untitled");
     formData.append("content", generateBlog);
@@ -39,7 +61,8 @@ const AiBlog = () => {
       });
       navigate("/blogs");
     } catch (err) {
-      alert("Failed to post blog");
+      console.error("Post error:", err);
+      alert("Failed to post blog. Please try again.");
     }
   };
 
@@ -84,18 +107,22 @@ const AiBlog = () => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
+
             <textarea
               value={generateBlog}
               onChange={(e) => setGenerateBlog(e.target.value)}
               className="w-full bg-gray-900 text-white border border-white/10 p-3 rounded h-64 resize-none focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
+
             <input
               type="file"
               onChange={(e) => setThumbnail(e.target.files[0])}
               className="file:bg-purple-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded text-white"
             />
+
             <button
               onClick={handlePost}
+              disabled={loading}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded font-medium shadow-[0_0_20px_rgba(0,128,255,0.4)] transition"
             >
               ✅ Post this Blog
