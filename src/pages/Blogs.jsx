@@ -5,19 +5,28 @@ import { Link } from "react-router-dom";
 const Blogs = () => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const fetchPosts = async () => {
+      setLoading(true); 
       try {
         const data = await getAllPosts();
         setPosts(data);
       } catch (err) {
         setError("Error fetching blogs");
         console.error("Error fetching blogs", err);
+      } finally {
+        setLoading(false); 
       }
     };
     fetchPosts();
   }, []);
+
+  
+  const SkeletonCard = () => (
+    <div className="animate-pulse bg-white/5 border border-white/10 rounded-lg p-5 h-40" />
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] text-white py-12 px-4">
@@ -28,7 +37,13 @@ const Blogs = () => {
 
         {error && <p className="text-red-500 text-center">{error}</p>}
 
-        {posts.length === 0 ? (
+        {loading ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        ) : posts.length === 0 ? (
           <p className="text-center text-gray-300">No blogs found.</p>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
