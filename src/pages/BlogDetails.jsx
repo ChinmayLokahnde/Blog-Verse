@@ -48,7 +48,7 @@ const BlogDetails = () => {
       <div className="max-w-3xl mx-auto bg-white/5 backdrop-blur-md p-6 rounded-xl shadow-lg border border-white/10">
         {blog.thumbnail && (
           <img
-            src={`${import.meta.env.VITE_API_BASE_URL.replace('/api', '')}/${blog.thumbnail.replace(/\\/g, '/')}`}
+            src={blog.thumbnail}
             alt="thumbnail"
             className="rounded-lg w-full max-w-md aspect-square object-cover mx-auto mb-6 bg-white/10 p-2 shadow-[0_0_15px_rgba(0,255,255,0.1)]"
           />

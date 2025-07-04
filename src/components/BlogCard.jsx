@@ -5,7 +5,7 @@ const BlogCard = ({ blog }) => {
     <div className="bg-white/5 border border-white/10 text-white rounded-xl shadow-md overflow-hidden backdrop-blur-md transition transform hover:scale-105 hover:shadow-[0_0_20px_rgba(0,255,255,0.2)]">
       {blog.thumbnail && (
         <img
-          src={`${import.meta.env.VITE_API_BASE_URL}/uploads/${blog.thumbnail}`}
+          src={blog.thumbnail}
           alt="thumbnail"
           className="w-full h-48 object-cover"
         />
